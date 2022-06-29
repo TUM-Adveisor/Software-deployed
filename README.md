@@ -1,71 +1,64 @@
 # Adveisor Software
-Software to be run on the raspberry Pi or any end terminal to control the to - be - built remote controlled board game 
+Software running on the raspberry Pi 4 of the remote controlled board game
 ## Dependencies
-Require Python, Kivy (UI Library), Stockfish (Chess engine) and its API for Python
+Require Python, Kivy (UI Library), pyserial, Stockfish (Chess engine) and its API for Python
+
 ## Current Feature
 - A working chess display with drag and drop piece movement
 - Start a new game with human vs human
 
 ## Required steps 
 ### Getting started
-* Install [Python](https://www.python.org/downloads/) 
-* Install [Kivy](https://kivy.org/doc/stable/gettingstarted/installation.html) and [Stockfish API for Python](https://pypi.org/project/stockfish/)  or use the uploaded kivy_venv virtual enviromnent folder if on Windows by navigating to the downloaded folder usind command line and execute 
+* Install Tools for creating a virtual environment for python  
 	```
-	kivy_venv\Scripts\activate
+	python -m pip install --upgrade pip setuptools virtualenv
 	```
-	to activate the python virtual environment
-
-* Download the code as ZIP file and extract it into a folder	or clone the repository
-* Download [Stockfish](https://stockfishchess.org/download/) and replace the executable Stockfish programm with the downloaded programm if not on windows 
+* Create a new folder on raspbian desktop named adveisor and download the code / clone the repository to the folder and activate the python virtual environment
+	```
+	python -m virtualenv kivy_venv
+	source kivy_venv/bin/activate
+	```
+* Install [Kivy](https://kivy.org/doc/stable/gettingstarted/installation.html) 
+	```
+	python -m pip install "kivy[base]" kivy_examples
+	sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev
+	```
+* Install [Stockfish](https://stockfishchess.org/), [Stockfish API for Python](https://pypi.org/project/stockfish/)  and [pyserial](https://pyserial.readthedocs.io/en/latest/pyserial.html)
+	```
+	sudo apt-get install stockfish
+	pip install stockfish==3.21.0
+	pip install pyserial
+	```
+* Follow [3.5 Inch RPI display installation](http://www.lcdwiki.com/3.5inch_RPi_Display) guide to finish the LCD setup (Optional)
+	```
+	sudo rm -rf LCD-show
+	git clone https://github.com/goodtft/LCD-show.git
+	chmod -R 755 LCD-show
+	cd LCD-show/
+	sudo ./LCD35-show 270
+	```
+* To return to hdmi:
+	```
+	cd LCD-show/
+	 ./LCD-hdmi
+	```
 ### Executing program
 * run program by entering 
 	```
 	python gui.py
 	```
-## To Do List
+## Features
+- Fully functional chess logic powered by Stockfish with en passant, castling and pawn promotion Implemented
+- Fully custom written graphical interface for controlling and visualizing the game board
+- Automatically linked reset, newgame, and move function
+- Support Human VS Human, Human VS Human (only software), Human VS AI, AI VS AI (POG)
+- Support board side switching 
 
- - Add Boundary to piece draggable Position
+## To be implemented
+* Ladders and snake and monopoly game option
+* drunk chess
+* Integration of visual recognition model to reach autonom chesspiece position and movement detection
 
- - Add prevention of grid position outside boards and related crash issue
-
- - Load/Output with Forsyth–Edwards Notation
-
- - Implement restart game function, Fix start game button will spawn new pieces above existing ones
-
- - Remake and restyle right side of GUI (Terminal and command) and Implement new functions
-
- - Implement check mate check and response, including
-
-	 >	 Pawn Promotion
-
-	 > 	Castling
-
-	 > 	En Passant Capture
-
- - Implement control / config screen
-
- - Implement more functionality
-
- - Implement communication with server and data syncronization
-
- - Implement music player and sound effects
-
- - Implement timed chess function
-
- - Implement command line input
-
- - Implement bottom Status bar
-
- - Make everything look better by Implementing better color scheme and better layout
-
- - Create Public and private class for Better access
-
-
-## Version History
-
-
-* 0.1 pre Alpha Prototype
-    * Initial Upload
 
 ## Documentation and further readings 
 See [Kivy examples](https://kivy.org/doc/stable/examples/gallery.html) and [Kivy Documentation](https://kivy.org/doc/stable/api-kivy.html)

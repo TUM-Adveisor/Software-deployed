@@ -47,6 +47,10 @@ Require Python, Kivy (UI Library), pyserial, Stockfish (Chess engine) and its AP
 	```
 	python gui.py
 	```
+#### Please ensure: 
+* Path of files are correctly included (kivyLib.py, gui.py)
+* Correct serial port (Commonly "/dev/ttyUSB0" or "/dev/ttyACM0") in test.py
+* When running without motion system as stand alone: set enable in test.py to False
 ## Features
 - Fully functional chess logic powered by Stockfish with en passant, castling and pawn promotion Implemented
 - Fully custom written graphical interface for controlling and visualizing the game board

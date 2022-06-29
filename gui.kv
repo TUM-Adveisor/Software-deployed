@@ -1,0 +1,233 @@
+#:kivy 2.1.0
+#:import utils kivy.utils
+#chess piece drag behavior 
+<Piece>:
+    drag_rectangle: self.x, self.y, self.width, self.height
+    drag_timeout: 10000000000
+    drag_distance: 0
+#main GUI with chess board
+<GUILayout>
+    name: "main"
+    canvas.before:
+        Color: 
+            rgba:(1,1,1,1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        orientation: 'vertical'
+        size: root.width, root.height 
+        #Top navigation bar
+        ActionBar:
+            font_size: 50
+            size: root.width, root.height *.12
+            background_image: 'white-bg.png'
+            background_color: (0/255,101/255,189/255,1)
+            ActionView:
+                ActionPrevious:
+                    title_text_size: 5
+                    title: '  Adveisor Control'
+                    with_previous: False
+                    app_icon: 'adveisor.png'
+                    on_press: 
+                        root.manager.transition.direction = 'left'
+                        root.manager.current = 'config'
+        GridLayout: 
+            cols:1
+            #chess board
+            FloatLayout:
+                size_hint: (0.546,1)
+                canvas.before:
+                    Rectangle:
+                        pos: self.pos 
+                        size: self.size 
+                        source: 'Chess_Board.png'
+                RelativeLayout:
+                    id: chess_board
+                    turn: 'w'
+            #terminal stuff
+            BoxLayout:
+                id: terminal
+                size_hint: (0.454,0.5)
+                orientation: "vertical"
+                TextInput:
+                    id: cmd_out
+                    size_hint: (1,0.8)
+                    text: "Terminal"
+                BoxLayout:
+                    size_hint: (1,0.2)
+                    orientation: "horizontal"
+                    Button:
+                        text:'reset'
+                        on_press: root.reset_board()
+                    Button:
+                        text:'new round'
+                        on_press: root.start_game()
+            #bottom Status bar 
+            Label:
+                text: ""
+                halign: 'left' 
+                size_hint: (0.55,0.05)
+                background_color: (0/255,101/255,189/255,1)
+                canvas.before:
+                    Color: 
+                        rgba: self.background_color
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+            Label:
+                text: "Idling... "
+                text_size: self.size
+                font_size: 10
+                halign: 'right'
+                valign: 'middle'
+                size_hint: (0.45,0.05)
+                background_color: (0/255,101/255,189/255,1)
+                canvas.before:
+                    Color: 
+                        rgba: self.background_color
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+#second screen, just copy pasted main screen with deleted stuff as mock up
+<ConfigLayout>
+    name: "config"
+    canvas.before:
+        Color: 
+            rgba:(1,1,1,1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        orientation: 'vertical'
+        size: root.width, root.height 
+        ActionBar:
+            font_size: 50
+            size: root.width, root.height *.12
+            background_image: 'white-bg.png'
+            background_color: (0/255,101/255,189/255,1)
+            ActionView:
+                ActionPrevious:
+                    title_text_size: 5
+                    title: '  Adveisor Control'
+                    with_previous: False
+                    app_icon: 'adveisor.png'
+                    on_press: 
+                        root.manager.transition.direction = 'right'
+                        root.manager.current = 'main'
+        BoxLayout:
+            size_hint: (1,1.2)
+            orientation: "vertical"
+            Label:
+                text:'Settings'
+                font_size: 20
+                halign: 'right'
+                valign: 'middle'
+                background_color: (9/255,28/255,87/255,1)
+                canvas.before:
+                    Color: 
+                        rgba: self.background_color
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+            Button:
+                id: AiToggle
+                text:'AI Enemy: off'
+                on_press: root.toggleGamemode()
+            Button:
+                id: MoveToggle
+                text:'Machine Move: on'
+                on_press: root.toggleMovemode()
+            Button:
+                id: ColorSelection
+                text:'Player Side: White'
+                on_press: root.colorSelection()
+            Button:
+                id: playerColorLock
+                text:'Player Color Lock: True'
+                on_press: root.playerMovementLock()
+            Button:
+                id: boardFrontSide
+                text:'Board Front Color: White'
+                on_press: root.boardFrontSide()
+        BoxLayout:
+            orientation: "horizontal"
+            canvas.before:
+                Color: 
+                    rgba:(0.5,0.5,0.5,1)
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Slider:
+                id: r
+                min: 0
+                max: 255
+                step: 1
+                orientation: 'vertical'
+                
+            Slider:
+                id: g
+                min: 0
+                max: 255
+                step: 1
+                orientation: 'vertical'
+               
+            Slider:
+                id: b
+                min: 0
+                max: 255
+                step: 1
+                orientation: 'vertical'
+                
+            Slider:
+                id: w
+                min: 0
+                max: 255
+                step: 1
+                orientation: 'vertical'
+               
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint: (1,0.2)
+            canvas.before:
+                Color: 
+                    rgba:(0.5,0.5,0.5,1)
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Label:
+                text: "r: " + str(r.value)
+            Label:
+                text: "g: " +str(g.value)
+            Label:
+                text: "b: " +str(b.value)
+            Label:
+                text: "w: " +str(w.value)
+        GridLayout: 
+            cols:2
+            size_hint: (1,0.05)
+            Label:
+                text: ""
+                halign: 'left' 
+                size_hint: (0.55,0.05)
+                background_color: (0/255,101/255,189/255,1)
+                canvas.before:
+                    Color: 
+                        rgba: self.background_color
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+            Label:
+                text: "Idling... "
+                text_size: self.size
+                font_size: 10
+                halign: 'right'
+                valign: 'middle'
+                size_hint: (0.45,0.05)
+                background_color: (0/255,101/255,189/255,1)
+                canvas.before:
+                    Color: 
+                        rgba: self.background_color
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos

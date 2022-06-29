@@ -1,0 +1,13 @@
+import imp
+import socket
+import time
+class MySocket:
+
+    def __init__(self,host="127.0.0.1",port=45454):
+        self.sock = socket.socket()
+        self.sock.connect((host, port))
+    def get_data(self):
+        return self.sock.recv(1024)
+    def send_data(self, msg): 
+        self.sock.send(msg.encode('ascii'))
+        time.sleep(0.1)
